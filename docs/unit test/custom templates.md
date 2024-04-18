@@ -3,7 +3,7 @@ Code generation is implemented using [Apache FreeMarker] (https://freemarker.apa
 
 the method/class level, but the generated file name cannot be changed
 
-you can custom templates in Settings
+you can custom templates in Settings | Other Settings | CodeHelper
 
 
 Here are some of the variables you'll use when custom templates

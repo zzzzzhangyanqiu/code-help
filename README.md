@@ -6,6 +6,7 @@
 <ul>
     <li>生成单元测试类和测试方法，mock字段等</li>
     <li>为已有测试类添加测试方法</li>
+    <li>支持定制代码模板</li>
 </ul>
 
 插件地址：https://plugins.jetbrains.com/plugin/23922-code-helper
