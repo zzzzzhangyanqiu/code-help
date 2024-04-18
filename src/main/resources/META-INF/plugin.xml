@@ -19,7 +19,7 @@
             <ul>
                 <li>Generate unit test classes and test methods, mock fields, etc</li>
                 <li>Add a test method to an existing test class</li>
-                <li>Support custom templates of generated test code</li>
+                <li><a href="https://github.com/zzzzzhangyanqiu/code-helper/blob/main/docs/unit%20test/custom%20templates.md">Support custom templates of generated test code</a></li>
             </ul>
             </p>
 
@@ -33,7 +33,7 @@
             <ul>
                 <li>生成单元测试类和测试方法，mock字段等</li>
                 <li>为已有测试类添加测试方法</li>
-                <li>支持定制代码模板</li>
+                <li><a href="https://github.com/zzzzzhangyanqiu/code-helper/blob/main/docs/unit%20test/custom%20templates.md">支持定制代码模板</a></li>
             </ul>
             </p>
         ]]>
@@ -42,7 +42,7 @@
     <change-notes><![CDATA[
         <h3>1.1.0</h3>
 		<ul>
-			<li>Support custom templates of generated test code</li>
+			<li>Support <a href="https://github.com/zzzzzhangyanqiu/code-helper/blob/main/docs/unit%20test/custom%20templates.md">custom templates</a> of generated test code</li>
 		</ul>
 		<h3>1.0.1</h3>
 		<ul>
