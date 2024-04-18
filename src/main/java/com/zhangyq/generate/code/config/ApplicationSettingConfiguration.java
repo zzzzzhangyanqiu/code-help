@@ -10,6 +10,8 @@ import javax.swing.*;
 
 public class ApplicationSettingConfiguration implements Configurable {
     private final ApplicationSettingPanel applicationSettingPanel = new ApplicationSettingPanel();
+    private final ApplicationSetting instance = ApplicationSetting.getInstance();
+    private boolean isModified;
 
     @Override
     public @NlsContexts.ConfigurableName String getDisplayName() {
@@ -18,32 +20,43 @@ public class ApplicationSettingConfiguration implements Configurable {
 
     @Override
     public @Nullable JComponent createComponent() {
-        ApplicationSetting instance = ApplicationSetting.getInstance();
         instance.setDefault();
-        applicationSettingPanel.methodTemplate.setText(instance.methodTemplate);
-        applicationSettingPanel.classTemplate.setText(instance.classTemplate);
-        applicationSettingPanel.testUtilTemplate.setText(instance.testUtilTemplate);
+        displayConfig();
         return applicationSettingPanel.getMainPanel();
     }
 
     @Override
     public boolean isModified() {
-        return true;
+        isModified = !instance.isDefault(applicationSettingPanel);
+        return isModified;
     }
 
     @Override
     public void apply() throws ConfigurationException {
-        ApplicationSetting.getInstance().methodTemplate = applicationSettingPanel.methodTemplate.getText();
-        ApplicationSetting.getInstance().classTemplate = applicationSettingPanel.classTemplate.getText();
-        ApplicationSetting.getInstance().testUtilTemplate = applicationSettingPanel.testUtilTemplate.getText();
+        if(isModified) {
+            saveConfig();
+        }
+    }
+
+    private void saveConfig() {
+        instance.methodTemplate = applicationSettingPanel.methodTemplate.getText();
+        instance.classTemplate = applicationSettingPanel.classTemplate.getText();
+        instance.testUtilTemplate = applicationSettingPanel.testUtilTemplate.getText();
+    }
+
+    private void displayConfig() {
+        applicationSettingPanel.methodTemplate.setText(instance.methodTemplate);
+        applicationSettingPanel.classTemplate.setText(instance.classTemplate);
+        applicationSettingPanel.testUtilTemplate.setText(instance.testUtilTemplate);
     }
 
     @Override
     public void reset() {
-        ApplicationSetting instance = ApplicationSetting.getInstance();
+        if (!isModified) {
+            return;
+        }
         instance.reset();
-        applicationSettingPanel.methodTemplate.setText(instance.methodTemplate);
-        applicationSettingPanel.classTemplate.setText(instance.classTemplate);
-        applicationSettingPanel.testUtilTemplate.setText(instance.testUtilTemplate);
+        displayConfig();
+        isModified = false;
     }
 }

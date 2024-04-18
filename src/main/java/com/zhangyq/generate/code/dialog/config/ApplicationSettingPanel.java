@@ -8,6 +8,9 @@ public class ApplicationSettingPanel {
     public JTextArea classTemplate;
     public JTextArea testUtilTemplate;
 
+    public ApplicationSettingPanel() {
+    }
+
     public JPanel getMainPanel() {
         return mainPanel;
     }

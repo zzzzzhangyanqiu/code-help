@@ -15,11 +15,12 @@
 
             <p>It can be used: Right-click > Generate > Code Helper</p>
             <p>The unit test related functions are developed on the basis of <a href="https://plugins.jetbrains.com/plugin/18420-jcode5">jcode5</a>, and some problems in the use of the original plugin are optimized</p>
+            <p>This is a <a href="https://github.com/zzzzzhangyanqiu/code-helper/blob/main/docs/unit%20test/custom%20templates.md">guide</a> about custom templates</p>
             <p>features:
             <ul>
                 <li>Generate unit test classes and test methods, mock fields, etc</li>
                 <li>Add a test method to an existing test class</li>
-                <li><a href="https://github.com/zzzzzhangyanqiu/code-helper/blob/main/docs/unit%20test/custom%20templates.md">Support custom templates of generated test code</a></li>
+                <li>Support custom templates of generated test code</li>
             </ul>
             </p>
 
@@ -29,11 +30,12 @@
 
             <p>使用方式为：右键 > Generate > Code Helper</p>
             <p>单元测试相关功能在<a href="https://plugins.jetbrains.com/plugin/18420-jcode5">jcode5</a>基础上开发而来，优化了原插件使用上的一些问题</p>
+            <p><a href="https://github.com/zzzzzhangyanqiu/code-helper/blob/main/docs/unit%20test/custom%20templates.md">这里</a>是关于定制代码模板的相关文档</p>
             <p>功能列表:
             <ul>
                 <li>生成单元测试类和测试方法，mock字段等</li>
                 <li>为已有测试类添加测试方法</li>
-                <li><a href="https://github.com/zzzzzhangyanqiu/code-helper/blob/main/docs/unit%20test/custom%20templates.md">支持定制代码模板</a></li>
+                <li>支持定制代码模板</li>
             </ul>
             </p>
         ]]>
