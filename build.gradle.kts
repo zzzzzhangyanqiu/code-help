@@ -26,7 +26,7 @@ dependencies {
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
   version.set("2022.2")
-  pluginName.set("codeHelper")
+  pluginName.set("Code Helper")
   type.set("IC") // Target IDE Platform
 
   plugins.set(listOf("com.intellij.java"))
