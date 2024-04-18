@@ -41,10 +41,34 @@ public class FileUtil {
         // 获取模板文件
         try(Writer out = new StringWriter()) {
             Template template = configuration.getTemplate(templateName);
-
             template.process(dataModel, out);
 
             return out.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return StringUtils.EMPTY;
+    }
+
+    public static String generateStringByString(String templateString, Map<String, Object> dataModel, Configuration configuration) {
+        // 获取模板文件
+        try(Writer out = new StringWriter()) {
+            Template template = new Template("template", templateString, configuration);
+            template.process(dataModel, out);
+
+            return out.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return StringUtils.EMPTY;
+    }
+
+    public static String getTemplateString(String templateName, Configuration configuration) {
+        // 获取模板文件
+        try {
+            Template template = configuration.getTemplate(templateName);
+
+            return template.toString();
         } catch (Exception e) {
             e.printStackTrace();
         }

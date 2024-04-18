@@ -1,11 +1,13 @@
 package com.zhangyq.generate.code.pojo;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Maps;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.PsiClassReferenceType;
 import com.intellij.psi.util.PsiUtil;
 import com.zhangyq.generate.code.common.ValueContext;
+import com.zhangyq.generate.code.config.ApplicationSetting;
 import com.zhangyq.generate.code.generator.file.FileCreateTask;
 import com.zhangyq.generate.code.generator.file.UnitTestCodeGenerator;
 import com.zhangyq.generate.util.CodeUtil;
@@ -48,9 +50,12 @@ public class MyMethod {
     Map<String, Integer> nameCount = new HashMap<>();
     ValueContext valueContext = ValueContext.getContext();
 
-    public MyMethod(PsiMethod method, UnitTestCodeGenerator unitTestCodeGenerator) {
+    ApplicationSetting applicationSetting;
+
+    public MyMethod(PsiMethod method, UnitTestCodeGenerator unitTestCodeGenerator, ApplicationSetting applicationSetting) {
         this.method = method;
         this.unitTestCodeGenerator = unitTestCodeGenerator;
+        this.applicationSetting = applicationSetting;
         needMockFieldMethod = new HashMap<>();
         needMockFields = new HashMap<>();
         needImports = new HashSet<>();
@@ -88,18 +93,14 @@ public class MyMethod {
      * @return
      */
     private String generateText(String filePath, String fileName, String methodNameCount, String methodContent) {
-        if (ValueContext.isJsonFileSource()) {
-            return String.format("\t@ParameterizedTest\n"
-                            + "\t@JsonFileSource(resources = {\"/%s/%s\"})\n"
-                            + " \tpublic void %sTest(JSONObject arg) {\n%s\t}\n\n", filePath, fileName, methodNameCount,
-                    methodContent);
-        } else {
-            return "\t@ParameterizedTest\n" +
-                    String.format("\t@ValueSource(strings = {\"/%s/%s\"})\n"
-                                    + " \tpublic void %sTest(String str) {\n\t\tJSONObject arg = TestUtils.getTestArg(str);\n"
-                                    + "%s\t}\n\n", filePath, fileName, methodNameCount,
-                            methodContent);
-        }
+        Map<String, Object> modelMap = Maps.newHashMap();
+
+        modelMap.put("jsonFilePath", filePath);
+        modelMap.put("jsonFileName", fileName);
+        modelMap.put("methodName", methodNameCount);
+        modelMap.put("methodContent", methodContent);
+
+        return FileUtil.generateStringByString(applicationSetting.methodTemplate, modelMap, unitTestCodeGenerator);
     }
 
     /**

@@ -1,13 +1,7 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
     <id>com.zhangyq.code-generate-idea</id>
-
-    <!-- Public plugin name should be written in Title Case.
-         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
     <name>Code-generate-idea</name>
-
-    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
     <vendor email="zzzzzhangyanqiu@163.com" url="https://github.com/zzzzzhangyanqiu/">
         zzzzzhangyanqiu
     </vendor>
@@ -25,6 +19,7 @@
             <ul>
                 <li>Generate unit test classes and test methods, mock fields, etc</li>
                 <li>Add a test method to an existing test class</li>
+                <li>Support custom templates of generated test code</li>
             </ul>
             </p>
 
@@ -38,10 +33,24 @@
             <ul>
                 <li>生成单元测试类和测试方法，mock字段等</li>
                 <li>为已有测试类添加测试方法</li>
+                <li>支持定制代码模板</li>
             </ul>
             </p>
         ]]>
     </description>
+
+    <change-notes><![CDATA[
+        <h3>1.1.0</h3>
+		<ul>
+			<li>Support custom templates of generated test code</li>
+		</ul>
+		<h3>1.0.1</h3>
+		<ul>
+			<li>Generate unit test classes and test methods</li>
+			<li>Add a test method to an existing test class</li>
+		</ul>
+
+    ]]></change-notes>
 
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
@@ -52,7 +61,12 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
+        <applicationConfigurable
+                instance="com.zhangyq.generate.code.config.ApplicationSettingConfiguration"
+                id="com.zhangyq.generate.code.config.ApplicationSettingConfiguration"
+                displayName="CodeHelper"/>
 
+        <applicationService serviceImplementation="com.zhangyq.generate.code.config.ApplicationSetting" />
     </extensions>
 
     <actions>

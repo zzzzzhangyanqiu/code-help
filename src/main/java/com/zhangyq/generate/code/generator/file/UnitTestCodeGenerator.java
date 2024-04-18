@@ -7,7 +7,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiUtil;
 import com.zhangyq.generate.code.common.ValueContext;
-import com.zhangyq.generate.code.generator.value.JsonFileGenerator;
+import com.zhangyq.generate.code.config.ApplicationSetting;
 import com.zhangyq.generate.code.pojo.MyField;
 import com.zhangyq.generate.code.pojo.MyMethod;
 import com.zhangyq.generate.util.CodeUtil;
@@ -24,42 +24,42 @@ import java.util.stream.Collectors;
  */
 public class UnitTestCodeGenerator extends TestFreemarkerConfiguration {
     ValueContext valueContext = ValueContext.getContext();
+
+    ApplicationSetting applicationSetting = ApplicationSetting.getInstance();
     /**
      * 当前类
      */
-    private PsiClass psiClass;
+    private final PsiClass psiClass;
     /**
      * 需要mock的类变量
      */
-    private List<PsiField> needMockFields;
+    private final List<PsiField> needMockFields;
     /**
      * 需要输出测试的方法
      */
-    private List<MyMethod> needMockMethods;
+    private final List<MyMethod> needMockMethods;
 
     /**
      * 当前文件，主要为了获取路径
      */
-    private PsiFile psiFile;
+    private final PsiFile psiFile;
     private Set<String> needImports = new HashSet<>();
-    private Map<String, Integer> methodCount = new HashMap<>();
-    private JsonFileGenerator jsonFileGenerator = new JsonFileGenerator();
+    private final Map<String, Integer> methodCount = new HashMap<>();
 
     public UnitTestCodeGenerator(List<PsiField> fields, List<PsiMethod> needMockMethods) {
         this.psiClass = ValueContext.getPsiClass();
         this.needMockFields = fields;
-        this.needMockMethods = needMockMethods.stream().map(a -> new MyMethod(a, this)).collect(Collectors.toList());
+        this.needMockMethods = needMockMethods.stream().map(a -> new MyMethod(a, this, applicationSetting)).collect(Collectors.toList());
         this.psiFile = ValueContext.getPsiFile();
-        if (!ValueContext.isJsonFileSource()) {
-            needImports.add("import com.util.TestUtils;\n");
-            needImports.add("import org.junit.jupiter.params.provider.ValueSource;\n");
-            saveTestUtils();
-        }
+
+        needImports.add("import com.util.TestUtils;\n");
+        needImports.add("import org.junit.jupiter.params.provider.ValueSource;\n");
+        saveTestUtils();
     }
 
     public UnitTestCodeGenerator(PsiClass psiClass, List<PsiMethod> needMockMethods, PsiFile psiFile) {
         this.psiClass = psiClass;
-        this.needMockMethods = needMockMethods.stream().map(a -> new MyMethod(a, this)).collect(Collectors.toList());
+        this.needMockMethods = needMockMethods.stream().map(a -> new MyMethod(a, this, applicationSetting)).collect(Collectors.toList());
         // todo 有一些小问题，比如不需要mock的fields
         VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(ValueContext.getPath().toFile());
         PsiJavaFile file = (PsiJavaFile)PsiManager.getInstance(ValueContext.getEvent().getProject()).findFile(virtualFile);
@@ -79,7 +79,7 @@ public class UnitTestCodeGenerator extends TestFreemarkerConfiguration {
         if(file.exists()) {
            return;
         }
-        FileCreateTask fileCreateTask = new FileCreateTask(s, "TestUtils.java", FileUtil.generateString("TestUtils.ftl", Maps.newHashMap(), this));
+        FileCreateTask fileCreateTask = new FileCreateTask(s, "TestUtils.java", FileUtil.generateStringByString(applicationSetting.testUtilTemplate, Maps.newHashMap(), this));
         ApplicationManager.getApplication().runWriteAction(fileCreateTask);
     }
 
@@ -111,7 +111,7 @@ public class UnitTestCodeGenerator extends TestFreemarkerConfiguration {
         modelMap.put("needMockFields", generateMockObjects());
         modelMap.put("methodList", methodList);
 
-        return FileUtil.generateString("TestClass.ftl", modelMap, this);
+        return FileUtil.generateStringByString(applicationSetting.classTemplate, modelMap, this);
     }
 
     /**
