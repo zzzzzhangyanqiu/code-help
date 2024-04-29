@@ -25,6 +25,7 @@ public class MethodSelectDialog extends DialogWrapper {
     private JLabel methodLabel;
     private JPanel methodPanel;
     private JPanel mainPanel;
+    private JCheckBox parameterizedTest;
     private final GridConstraints constraints;
     private final MemberSelectionTable myMethodsTable;
 
@@ -69,4 +70,9 @@ public class MethodSelectDialog extends DialogWrapper {
     protected @Nullable JComponent createCenterPanel() {
         return this.mainPanel;
     }
+
+    public boolean getParameterizedTest() {
+        return parameterizedTest.isSelected();
+    }
+
 }

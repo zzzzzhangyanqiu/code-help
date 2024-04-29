@@ -52,13 +52,16 @@ public class MyMethod {
 
     ApplicationSetting applicationSetting;
 
-    public MyMethod(PsiMethod method, UnitTestCodeGenerator unitTestCodeGenerator, ApplicationSetting applicationSetting) {
+    private boolean parameterizedTest;
+
+    public MyMethod(PsiMethod method, UnitTestCodeGenerator unitTestCodeGenerator, ApplicationSetting applicationSetting, boolean parameterizedTest) {
         this.method = method;
         this.unitTestCodeGenerator = unitTestCodeGenerator;
         this.applicationSetting = applicationSetting;
         needMockFieldMethod = new HashMap<>();
         needMockFields = new HashMap<>();
         needImports = new HashSet<>();
+        this.parameterizedTest = parameterizedTest;
     }
 
     public void build() {
@@ -307,6 +310,9 @@ public class MyMethod {
      * @param fields
      */
     private void saveSourceData(String methodName, Map<PsiType, MultiValuesWithClass> fields) {
+        if(!parameterizedTest) {
+            return;
+        }
         String filePath = FileUtil.getJsonFilePath(this.unitTestCodeGenerator.getPsiFile());
         String fileName = FileUtil.getJsonFileName(methodName);
         Map<String, Object> collect = fields.entrySet().stream().collect(

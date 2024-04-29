@@ -61,7 +61,7 @@ public class TestMethodGenerateAction extends AnAction {
         if(methodSelectDialog.isOK()) {
             try {
                 List<PsiMethod> chooseMethods = methodSelectDialog.getChooseMethods();
-                UnitTestCodeGenerator unitTestCodeGenerator = new UnitTestCodeGenerator(psiClass, chooseMethods, ValueContext.getPsiFile());
+                UnitTestCodeGenerator unitTestCodeGenerator = new UnitTestCodeGenerator(psiClass, chooseMethods, ValueContext.getPsiFile(), methodSelectDialog.getParameterizedTest());
                 String s = unitTestCodeGenerator.genMethodBody();
                 new FileAppendTask(s).run();
             } catch (Exception exception) {

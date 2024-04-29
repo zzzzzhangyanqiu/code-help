@@ -38,6 +38,14 @@ public class UnitTestCodeGenerator extends TestFreemarkerConfiguration {
      * 需要输出测试的方法
      */
     private final List<MyMethod> needMockMethods;
+    /**
+     * 是否需要parameterizedTest
+     */
+    private boolean parameterizedTest;
+    /**
+     * 是否需要创建TestUtil
+     */
+    private boolean saveTestUtil;
 
     /**
      * 当前文件，主要为了获取路径
@@ -46,29 +54,35 @@ public class UnitTestCodeGenerator extends TestFreemarkerConfiguration {
     private Set<String> needImports = new HashSet<>();
     private final Map<String, Integer> methodCount = new HashMap<>();
 
-    public UnitTestCodeGenerator(List<PsiField> fields, List<PsiMethod> needMockMethods) {
+    public UnitTestCodeGenerator(List<PsiField> fields, List<PsiMethod> needMockMethods, boolean parameterizedTest, boolean saveTestUtil) {
         this.psiClass = ValueContext.getPsiClass();
         this.needMockFields = fields;
-        this.needMockMethods = needMockMethods.stream().map(a -> new MyMethod(a, this, applicationSetting)).collect(Collectors.toList());
+        this.needMockMethods = needMockMethods.stream().map(a -> new MyMethod(a, this, applicationSetting, parameterizedTest)).collect(Collectors.toList());
         this.psiFile = ValueContext.getPsiFile();
+        this.parameterizedTest = parameterizedTest;
+        this.saveTestUtil = saveTestUtil;
 
         needImports.add("import com.util.TestUtils;\n");
         needImports.add("import org.junit.jupiter.params.provider.ValueSource;\n");
         saveTestUtils();
     }
 
-    public UnitTestCodeGenerator(PsiClass psiClass, List<PsiMethod> needMockMethods, PsiFile psiFile) {
+    public UnitTestCodeGenerator(PsiClass psiClass, List<PsiMethod> needMockMethods, PsiFile psiFile, boolean parameterizedTest) {
         this.psiClass = psiClass;
-        this.needMockMethods = needMockMethods.stream().map(a -> new MyMethod(a, this, applicationSetting)).collect(Collectors.toList());
+        this.needMockMethods = needMockMethods.stream().map(a -> new MyMethod(a, this, applicationSetting, parameterizedTest)).collect(Collectors.toList());
         // todo 有一些小问题，比如不需要mock的fields
         VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(ValueContext.getPath().toFile());
         PsiJavaFile file = (PsiJavaFile)PsiManager.getInstance(ValueContext.getEvent().getProject()).findFile(virtualFile);
         PsiClass aClass = file.getClasses()[0];
         this.needMockFields = Arrays.asList(aClass.getAllFields());
         this.psiFile = psiFile;
+        this.parameterizedTest = parameterizedTest;
     }
 
     private void saveTestUtils() {
+        if(!this.saveTestUtil) {
+            return;
+        }
         PsiDirectory parent = psiFile.getParent();
         if(Objects.isNull(parent)) {
             return;

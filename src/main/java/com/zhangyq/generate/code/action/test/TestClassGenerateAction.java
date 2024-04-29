@@ -50,7 +50,7 @@ public class TestClassGenerateAction extends AnAction {
 
         if(fieldAndMethodConfirmPanel.isOK()) {
             try {
-                UnitTestCodeGenerator unitTestCodeGenerator = new UnitTestCodeGenerator(fieldAndMethodConfirmPanel.getChooseFields(), fieldAndMethodConfirmPanel.getChooseMethods());
+                UnitTestCodeGenerator unitTestCodeGenerator = new UnitTestCodeGenerator(fieldAndMethodConfirmPanel.getChooseFields(), fieldAndMethodConfirmPanel.getChooseMethods(), fieldAndMethodConfirmPanel.getParameterizedTest(), fieldAndMethodConfirmPanel.getSaveTestUtil());
                 ApplicationManager.getApplication().runWriteAction(
                         new FileCreateTask(ValueContext.getFilePath(), ValueContext.getFileName(), unitTestCodeGenerator.genContent()));
             } catch (Exception exception) {

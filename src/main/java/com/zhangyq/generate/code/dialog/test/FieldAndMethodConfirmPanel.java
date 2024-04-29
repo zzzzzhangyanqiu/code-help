@@ -36,6 +36,8 @@ public class FieldAndMethodConfirmPanel extends DialogWrapper {
     private JLabel baseTestLabel;
     private JPanel baseTestPanel;
     private JLabel baseTestChooseLabel;
+    private JCheckBox parameterizedTest;
+    private JCheckBox saveTestUtil;
     private PsiClass psiClass;
     final GridConstraints constraints;
     private final Project project;
@@ -155,5 +157,13 @@ public class FieldAndMethodConfirmPanel extends DialogWrapper {
     @Override
     protected @Nullable JComponent createCenterPanel() {
         return mainPanel;
+    }
+
+    public boolean getParameterizedTest() {
+        return parameterizedTest.isSelected();
+    }
+
+    public boolean getSaveTestUtil() {
+        return saveTestUtil.isSelected();
     }
 }

@@ -42,6 +42,10 @@
     </description>
 
     <change-notes><![CDATA[
+        <h3>1.1.1</h3>
+		<ul>
+			<li>Support @ParameterizedTest/@Test config</li>
+		</ul>
         <h3>1.1.0</h3>
 		<ul>
 			<li>Support <a href="https://github.com/zzzzzhangyanqiu/code-helper/blob/main/docs/unit%20test/custom%20templates.md">custom templates</a> of generated test code</li>
